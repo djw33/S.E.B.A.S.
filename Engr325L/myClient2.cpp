@@ -1,6 +1,6 @@
 /* A simple client program to interact with the myServer.c program on the Raspberry.
 myClient.c
-D. Thiebaut
+D. Thiebaut https://msdn.microsoft.com/en-us/library/windows/desktop/ms737591(v=vs.85).aspx
 Adapted from http://www.cs.rpi.edu/~moorthy/Courses/os98/Pgms/socket.html
 The port number used in 51717.
 This code is compiled and run on the Macbook laptop as follows:
