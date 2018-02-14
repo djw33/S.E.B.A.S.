@@ -9,6 +9,13 @@ using namespace std;
 
 VideoCapture * video;
 
+int Hue1 = 19;
+int Saturation1 = 185;
+int Value1 = 205;
+int Hue2 = 101;
+int Saturation2 = 22;
+int Value2 = 166;
+
 void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
 	if (event == EVENT_LBUTTONDOWN) {
 		Mat imgTemp;
@@ -22,9 +29,9 @@ void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
 
 		Vec3b hsv = imgTemp.at<Vec3b>(y, x);
 		cout << (int)hsv.val[0] << " " << (int)hsv.val[1] << " " << (int)hsv.val[2] << endl;
-		//Hue1 = hsv.val[0];
-		//Saturation1 = hsv.val[1];
-		//Value1 = hsv.val[2];
+		Hue1 = hsv.val[0];
+		Saturation1 = hsv.val[1];
+		Value1 = hsv.val[2];
 	}
 	if (event == EVENT_RBUTTONDOWN) {
 		Mat imgTemp;
@@ -38,9 +45,9 @@ void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
 
 		Vec3b hsv = imgTemp.at<Vec3b>(y, x);
 		cout << (int)hsv.val[0] << " " << (int)hsv.val[1] << " " << (int)hsv.val[2] << endl;
-		//Hue2 = hsv.val[0];
-		//Saturation2 = hsv.val[1];
-		//Value2 = hsv.val[2];
+		Hue2 = hsv.val[0];
+		Saturation2 = hsv.val[1];
+		Value2 = hsv.val[2];
 	}
 }
 
@@ -48,7 +55,7 @@ int main() {
 	ComputerVision cv;
 	video = &cv.cap;
 	while(true) {
-		cv.update();
+		cv.update(Hue1, Saturation1, Value1, Hue2, Saturation2, Value2);
 		setMouseCallback("Original", CallBackFunc, NULL);
 	}
 	//cout << angle << endl << force << endl;

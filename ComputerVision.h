@@ -10,19 +10,17 @@ using namespace std;
 class ComputerVision {
 public:
 	ComputerVision();
-	void update();
+	void update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2);
 	//void CallBackFunc(int event, int x, int y, int flags, void* userdata);
 	VideoCapture cap;
 
 private:
-	
-	// = 0
-	int Hue1;
+	/*int Hue1;
 	int Saturation1;
 	int Value1;
 	int Hue2;
 	int Saturation2;
-	int Value2;
+	int Value2;*/
 	
 	Point2f oldCenter1;
 	Point2f oldCenter2;

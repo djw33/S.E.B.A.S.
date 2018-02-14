@@ -4,76 +4,12 @@
 
 #include "ComputerVision.h"
 
-//VideoCapture cap(0); //capture the video from web cam	//member
-
-//int Hue1 = 0;	//member
-//int Saturation1 = 0;	//member
-//int Value1 = 0;	//member
-
-//int Hue2 = 0;	//member
-//int Saturation2 = 0;	//member
-//int Value2 = 0;	//member
-
-//int heading = 0;
-//int counter = 0;
-
-//vector<vector<Point> > contours1;
-//vector<Vec4i> hierarchy1;
-//Point2f center1;
-//Point2f oldCenter1;	//member
-//float radius1;
-const Scalar& color1 = (0, 255, 0);	//global
-
-//vector<vector<Point> > contours2;
-//vector<Vec4i> hierarchy2;
-//Point2f center2;
-//Point2f oldCenter2;	//member
-//float radius2;
-const Scalar& color2 = (255, 0, 0);	//global
-
+// globals
+const Scalar& color1 = (0, 255, 0);
+const Scalar& color2 = (255, 0, 0);
 // **** SET DATA SAMPLING RATE ****
-double samplingRate = 3;	//global
-double samplingInterval = (double)1 / samplingRate;	//global
-
-//clock_t lastTime;	//member
-//clock_t currentTime;
-
-//double newVelocity;
-//double oldVelocity;	//member
-//double acceleration;
-
-/*void ComputerVision::CallBackFunc(int event, int x, int y, int flags, void* userdata) {
-	if (event == EVENT_LBUTTONDOWN) {
-		Mat imgTemp;
-		bool bSuccess = cap.read(imgTemp); // read a new frame from video
-
-		if (!bSuccess) {
-			cout << "Cannot read a frame from video stream" << endl;
-		}
-
-		cvtColor(imgTemp, imgTemp, COLOR_BGR2HSV);
-
-		Vec3b hsv = imgTemp.at<Vec3b>(y, x);
-		Hue1 = hsv.val[0];
-		Saturation1 = hsv.val[1];
-		Value1 = hsv.val[2];
-	}
-	if (event == EVENT_RBUTTONDOWN) {
-		Mat imgTemp;
-		bool bSuccess = cap.read(imgTemp); // read a new frame from video
-
-		if (!bSuccess) {
-			cout << "Cannot read a frame from video stream" << endl;
-		}
-
-		cvtColor(imgTemp, imgTemp, COLOR_BGR2HSV);
-
-		Vec3b hsv = imgTemp.at<Vec3b>(y, x);
-		Hue2 = hsv.val[0];
-		Saturation2 = hsv.val[1];
-		Value2 = hsv.val[2];
-	}
-}*/
+double samplingRate = 3;
+double samplingInterval = (double)1 / samplingRate;
 
 ComputerVision::ComputerVision() : cap(0) {
 	namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
@@ -89,12 +25,12 @@ ComputerVision::ComputerVision() : cap(0) {
 	oldCenter1 = Point2f(0, 0);
 	oldCenter2 = Point2f(0, 0);
 	
-	Hue1 = 19;
+	/*Hue1 = 19;
 	Saturation1 = 185;
 	Value1 = 205;
 	Hue2 = 101;
 	Saturation2 = 22;
-	Value2 = 166;
+	Value2 = 166;*/
 
 	Herror1 = 8;
 	Serror1 = 50;
@@ -112,7 +48,7 @@ ComputerVision::ComputerVision() : cap(0) {
 	cvCreateTrackbar("Value2", "Control", &Verror2, 255); //Value (0 - 255)
 }
 
-void ComputerVision::update() {
+void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2) {
 	Mat imgOriginal;
 	Mat imgHSV;
 		
