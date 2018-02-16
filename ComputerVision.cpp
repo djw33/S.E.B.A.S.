@@ -24,13 +24,6 @@ ComputerVision::ComputerVision() : cap(0) {
 
 	oldCenter1 = Point2f(0, 0);
 	oldCenter2 = Point2f(0, 0);
-	
-	/*Hue1 = 19;
-	Saturation1 = 185;
-	Value1 = 205;
-	Hue2 = 101;
-	Saturation2 = 22;
-	Value2 = 166;*/
 
 	Herror1 = 8;
 	Serror1 = 50;
@@ -166,7 +159,6 @@ void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int
 		oldCenter2 = center2;
 	}
 
-	//setMouseCallback("Original", CallBackFunc, NULL);
 	imshow("Thresholded Image1", imgThresholded1); //show the thresholded image
 	imshow("Thresholded Image2", imgThresholded2);
 	imshow("Original", imgOriginal); //show the original image

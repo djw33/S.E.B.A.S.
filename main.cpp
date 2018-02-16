@@ -58,7 +58,6 @@ int main() {
 		cv.update(Hue1, Saturation1, Value1, Hue2, Saturation2, Value2);
 		setMouseCallback("Original", CallBackFunc, NULL);
 	}
-	//cout << angle << endl << force << endl;
 	return 0;
 }
 
