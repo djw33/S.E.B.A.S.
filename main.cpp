@@ -54,8 +54,12 @@ void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
 int main() {
 	ComputerVision cv;
 	video = &cv.cap;
+	float position[2];
+	float velocity[2];
+	float heading;
 	while(true) {
-		cv.update(Hue1, Saturation1, Value1, Hue2, Saturation2, Value2);
+		cv.update(Hue1, Saturation1, Value1, Hue2, Saturation2, Value2, position, velocity, &heading);
+		cout << position << " " << velocity << " " << heading << endl;
 		setMouseCallback("Original", CallBackFunc, NULL);
 	}
 	return 0;

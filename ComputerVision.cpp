@@ -41,7 +41,7 @@ ComputerVision::ComputerVision() : cap(0) {
 	cvCreateTrackbar("Value2", "Control", &Verror2, 255); //Value (0 - 255)
 }
 
-void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2) {
+void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2, float returnPosition[], float returnVelocity[], float * returnHeading) {
 	Mat imgOriginal;
 	Mat imgHSV;
 		
@@ -150,11 +150,16 @@ void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int
 
 	// Calculate velocity and acceleration based on position and time
 	if (currentTime - lastTime >= samplingInterval * CLOCKS_PER_SEC) {
+		returnVelocity[0] = (center1.x - oldCenter1.x) / (((double)currentTime - (double)lastTime) / CLOCKS_PER_SEC);
+		returnVelocity[1] = (center1.y - oldCenter1.y) / (((double)currentTime - (double)lastTime) / CLOCKS_PER_SEC);
 		newVelocity = (sqrt(pow(center1.x - oldCenter1.x, 2) + pow(center1.y - oldCenter1.y, 2)))/ (((double)currentTime - (double)lastTime) / CLOCKS_PER_SEC);
 		acceleration = (newVelocity - oldVelocity)/(((double)currentTime - (double)lastTime)/CLOCKS_PER_SEC);
 		//cout << "Heading: " << heading << "   " << "Velocity :" << newVelocity << "   " << "Acceleration: " << acceleration << endl;
 		oldVelocity = newVelocity;
 		lastTime = currentTime;
+		returnPosition[0] = (center1.x - center2.x / 2);
+		returnPosition[1] = (center1.y - center2.y / 2);
+		*returnHeading = (-1 * heading) + 90;
 		oldCenter1 = center1;
 		oldCenter2 = center2;
 	}
