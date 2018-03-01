@@ -10,7 +10,7 @@ using namespace std;
 class ComputerVision {
 public:
 	ComputerVision();
-	void update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2, float returnPosition[], float returnVelocity[], float * returnHeading);
+	void update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2);
 	VideoCapture cap;
 
 private:
