@@ -14,10 +14,9 @@ public:
 	VideoCapture cap;
 
 private:
-	Point2f oldCenter1;
-	Point2f oldCenter2;
 	clock_t lastTime;
-	double oldVelocity;
+	float oldVehicleX;
+	float oldVehicleY;
 	
 	int Herror1; //8
 	int Serror1; //50

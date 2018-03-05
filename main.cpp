@@ -17,6 +17,7 @@ int Saturation2 = 22;
 int Value2 = 166;
 
 void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
+	// Left click to indicate front of the vehicle
 	if (event == EVENT_LBUTTONDOWN) {
 		Mat imgTemp;
 		bool bSuccess = video->read(imgTemp); // read a new frame from video
@@ -33,6 +34,7 @@ void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
 		Saturation1 = hsv.val[1];
 		Value1 = hsv.val[2];
 	}
+	// Right click to indicate back of the vehicle
 	if (event == EVENT_RBUTTONDOWN) {
 		Mat imgTemp;
 		bool bSuccess = video->read(imgTemp); // read a new frame from video

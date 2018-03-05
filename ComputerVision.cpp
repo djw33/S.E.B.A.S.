@@ -4,6 +4,8 @@
 
 #include "ComputerVision.h"
 
+#define ledDistance 2
+
 // globals
 const Scalar& color1 = (0, 255, 0);
 const Scalar& color2 = (255, 0, 0);
@@ -20,10 +22,9 @@ ComputerVision::ComputerVision() : cap(0) {
 	}
 	
 	lastTime = clock();
-	oldVelocity = (double)0;
 
-	oldCenter1 = Point2f(0, 0);
-	oldCenter2 = Point2f(0, 0);
+	oldVehicleX = 0;
+	oldVehicleY = 0;
 
 	Herror1 = 8;
 	Serror1 = 50;
@@ -57,8 +58,6 @@ void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int
 	float radius2;
 		
 	clock_t currentTime;
-	double newVelocity;
-	double acceleration;
 
 	bool bSuccess = cap.read(imgOriginal); // read a new frame from video
 
@@ -89,9 +88,11 @@ void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int
 	int iLowV2 = Value2 - Verror2;
 	int iHighV2 = Value2 + Verror2;
 
-	inRange(imgHSV, Scalar(iLowH1, iLowS1, iLowV1), Scalar(iHighH1, iHighS1, iHighV1), imgThresholded1); //Threshold the image
+	// Threshold the image
+	inRange(imgHSV, Scalar(iLowH1, iLowS1, iLowV1), Scalar(iHighH1, iHighS1, iHighV1), imgThresholded1);
 	inRange(imgHSV, Scalar(iLowH2, iLowS2, iLowV2), Scalar(iHighH2, iHighS2, iHighV2), imgThresholded2);
 
+	// Dilate the image
 	dilate(imgThresholded1, imgThresholded1, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 	dilate(imgThresholded2, imgThresholded2, getStructuringElement(MORPH_ELLIPSE, Size(5, 5)));
 
@@ -129,41 +130,45 @@ void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int
 
 		// If pointed NE
 		if (center1.y < center2.y && center1.x > center2.x) {
-			heading = 90 - (atan((center2.y - center1.y) / (center1.x - center2.x)) * 180 / 3.1415);
+			heading = (atan((center2.y - center1.y) / (center1.x - center2.x)) * 180 / 3.1415);
 		}
 		// If pointed NW
 		if (center1.y < center2.y && center1.x < center2.x) {
-			heading = 270 + (atan((center2.y - center1.y) / -(center1.x - center2.x)) * 180 / 3.1415);
+			heading = 180 - (atan((center2.y - center1.y) / (center2.x - center1.x)) * 180 / 3.1415);
 		}
 		// If pointed SW
 		if (center1.y > center2.y && center1.x < center2.x) {
-			heading = 180 + (atan((center2.x - center1.x) / (center1.y - center2.y)) * 180 / 3.1415);
+			heading = 180 + (atan((center1.y - center2.y) / (center2.x - center1.x)) * 180 / 3.1415);
 		}
 		// If pointed SE
 		if (center1.y > center2.y && center1.x > center2.x) {
-			heading = 180 - (atan((center1.x - center2.x) / (center1.y - center2.y)) * 180 / 3.1415);
+			heading = 360 - (atan((center1.y - center2.y) / (center1.x - center2.x)) * 180 / 3.1415);
 		}
 	}
 
-	// Time data is sampled
+	// Get cm/pixel ratio
+	float pixels_to_cm = ledDistance / sqrt(pow(center1.x - center2.x, 2)+pow(center1.y - center2.y, 2));
+
+	// Sample the clock value
 	currentTime = clock();
 
-	// Calculate velocity and acceleration based on position and time
+	// Calculate position and velocity vectors if the sampling period has passed
 	if (currentTime - lastTime >= samplingInterval * CLOCKS_PER_SEC) {
-		newVelocity = (sqrt(pow(center1.x - oldCenter1.x, 2) + pow(center1.y - oldCenter1.y, 2)))/ (((double)currentTime - (double)lastTime) / CLOCKS_PER_SEC);
-		acceleration = (newVelocity - oldVelocity)/(((double)currentTime - (double)lastTime)/CLOCKS_PER_SEC);
-		//cout << "Heading: " << heading << "   " << "Velocity :" << newVelocity << "   " << "Acceleration: " << acceleration << endl;
-		oldVelocity = newVelocity;
+		float vehicleX = ((center1.x + center2.x) / 2) * pixels_to_cm;
+		float vehicleY = ((center1.y + center2.y) / 2) * pixels_to_cm;
+		
+		float deltaX = vehicleX - oldVehicleX;
+		float deltaY = -(vehicleY - oldVehicleY);
+
+		float velocityX = (deltaX)/(((double)currentTime - (double)lastTime) / CLOCKS_PER_SEC);
+		float velocityY = (deltaY)/(((double)currentTime - (double)lastTime) / CLOCKS_PER_SEC);
+		
 		lastTime = currentTime;
-		oldCenter1 = center1;
-		oldCenter2 = center2;
+		oldVehicleX = vehicleX;
+		oldVehicleY = vehicleY;
 	}
 
 	imshow("Thresholded Image1", imgThresholded1); //show the thresholded image
 	imshow("Thresholded Image2", imgThresholded2);
 	imshow("Original", imgOriginal); //show the original image
-
-	if (waitKey(30) == 27) { //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
-		cout << "esc key is pressed by user" << endl;
-	}
 }
