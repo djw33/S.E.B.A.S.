@@ -42,7 +42,7 @@ ComputerVision::ComputerVision() : cap(0) {
 	cvCreateTrackbar("Value2", "Control", &Verror2, 255); //Value (0 - 255)
 }
 
-void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2) {
+void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2, float * positionOut, float * velocityOut, float * headingOut) {
 	Mat imgOriginal;
 	Mat imgHSV;
 		
@@ -124,7 +124,7 @@ void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int
 		circle(imgOriginal, center2, radius2, color2);
 	}
 
-	int heading;
+	int heading = 0;
 	if (contours2.size() != 0 & contours1.size() != 0) {
 		arrowedLine(imgOriginal, center2, center1, color1);
 
@@ -166,9 +166,18 @@ void ComputerVision::update(int Hue1, int Saturation1, int Value1, int Hue2, int
 		lastTime = currentTime;
 		oldVehicleX = vehicleX;
 		oldVehicleY = vehicleY;
+
+		positionOut[0] = vehicleX;
+		positionOut[1] = vehicleY;
+
+		velocityOut[0] = velocityX;
+		velocityOut[1] = velocityY;
+
+		*headingOut = heading;
 	}
 
 	imshow("Thresholded Image1", imgThresholded1); //show the thresholded image
 	imshow("Thresholded Image2", imgThresholded2);
 	imshow("Original", imgOriginal); //show the original image
+	waitKey(10);
 }
