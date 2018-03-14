@@ -10,8 +10,9 @@ using namespace std;
 class ComputerVision {
 public:
 	ComputerVision();
-	float update(int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2, float * positionOut, float * velocityOut, float * headingOut);
-	VideoCapture cap;
+	//int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2, 
+	float update(float * positionOut, float * velocityOut, float * headingOut);
+	//VideoCapture cap;
 
 private:
 	clock_t lastTime;

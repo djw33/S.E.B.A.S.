@@ -8,8 +8,8 @@
 #include <iostream>
 
 using namespace std;
-
-//VideoCapture * video;
+/*
+VideoCapture * capture;
 
 int Hue1 = 19;
 int Saturation1 = 185;
@@ -17,11 +17,11 @@ int Value1 = 205;
 int Hue2 = 101;
 int Saturation2 = 22;
 int Value2 = 166;
-/*
+
 bool frontSet = false;
 bool backSet = false;
 
-VideoCapture capture(0); //capture the video from web cam
+//VideoCapture capture(0); //capture the video from web cam
 
 vector<vector<Point> > contours1init;
 vector<Vec4i> hierarchy1init;
@@ -35,11 +35,11 @@ Point2f center2init;
 float radius2init;
 const Scalar& color2init = (255, 0, 0);
 
-void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
+void onMouse(int event, int x, int y, int flags, void* userdata) {
 	// Left click to indicate front of the vehicle
 	if (event == EVENT_LBUTTONDOWN) {
 		Mat imgTemp;
-		bool bSuccess = capture.read(imgTemp); // read a new frame from video
+		bool bSuccess = capture->read(imgTemp); // read a new frame from video
 
 		if (!bSuccess) {
 			cout << "Cannot read a frame from video stream" << endl;
@@ -51,13 +51,15 @@ void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
 		Hue1 = hsv.val[0];
 		Saturation1 = hsv.val[1];
 		Value1 = hsv.val[2];
+
+		cout << Hue1 << ", " << Saturation1 << ", " << Value1 << endl;
 		frontSet = true;
 	}
 
 	// Right click to indicate back of the vehicle
 	if (event == EVENT_RBUTTONDOWN) {
 		Mat imgTemp;
-		bool bSuccess = capture.read(imgTemp); // read a new frame from video
+		bool bSuccess = capture->read(imgTemp); // read a new frame from video
 
 		if (!bSuccess) {
 			cout << "Cannot read a frame from video stream" << endl;
@@ -68,12 +70,14 @@ void CallBackFunc(int event, int x, int y, int flags, void* userdata) {
 		Hue2 = hsv.val[0];
 		Saturation2 = hsv.val[1];
 		Value2 = hsv.val[2];
+
+		cout << Hue2 << ", " << Saturation2 << ", " << Value2 << endl;
 		backSet = true;
 	}
 }
-
+/*
 int init() {
-	if (!capture.isOpened()) {
+	if (!capture->isOpened()) {
 		cout << "Cannot open the web cam" << endl;
 		return -1;
 	}
@@ -102,11 +106,11 @@ int init() {
 	int iHighV2 = 255;
 	int Verror2 = 50;
 
-	while (!frontSet && !backSet) {
+	while (!frontSet || !backSet) {
 		Mat imgOriginal;
 		Mat imgHSV;
 
-		bool bSuccess = capture.read(imgOriginal); // read a new frame from video
+		bool bSuccess = capture->read(imgOriginal); // read a new frame from video
 
 		if (!bSuccess) {
 			cout << "Cannot read a frame from video stream" << endl;
@@ -178,11 +182,12 @@ int init() {
 			arrowedLine(imgOriginal, center2init, center1init, color1init);
 		}
 
-		setMouseCallback("Original", CallBackFunc, NULL);
+		
 		imshow("Thresholded Image1", imgThresholded1); //show the thresholded image
 		imshow("Thresholded Image2", imgThresholded2);
-		imshow("Original", imgOriginal); //show the original image
+		imshow("Original2", imgOriginal); //show the original image
 										 // Break the loop if the escape key is pressed
+		setMouseCallback("Original", onMouse, 0);
 		if (waitKey(30) == 27) {
 			cout << "esc key is pressed by user" << endl;
 			break;
@@ -193,9 +198,11 @@ int init() {
 }
 */
 int main() {
-	//init();
+	//namedWindow("Original", CV_WINDOW_AUTOSIZE);
 	ComputerVision compv;
-	Client client1;
+	//capture = &compv.cap;
+	//init();
+	//Client client1;
 	ControlSystem cs(0, 0);
 	float position[2];
 	float velocity[2];
@@ -206,11 +213,14 @@ int main() {
 	//video = &compv.cap;
 	
 	//setMouseCallback("Original", CallBackFunc, NULL);
-	
+	//setMouseCallback("Original", onMouse, 0);
+
 	while(true) {
-		deltaTime = compv.update(Hue1, Saturation1, Value1, Hue2, Saturation2, Value2, position, velocity, &heading);
+		//Hue1, Saturation1, Value1, Hue2, Saturation2, Value2, 
+		deltaTime = compv.update(position, velocity, &heading);
 		cs.update(position, velocity, heading, deltaTime / 1000, &angle, &force);
-		client1.transmit((int)angle, (int)force);
+		cout << (int)angle << ", " << (int)force << endl;
+		//client1.transmit((int)angle, (int)force);
 	}
 	return 0;
 }
