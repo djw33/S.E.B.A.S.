@@ -210,6 +210,10 @@ int main() {
 	float angle;
 	float force;
 	float deltaTime;
+	int oldTargetX = 0;
+	int oldTargetY = 0;
+	int targetX = 0;
+	int targetY = 0;
 	//video = &compv.cap;
 	
 	//setMouseCallback("Original", CallBackFunc, NULL);
@@ -217,10 +221,15 @@ int main() {
 
 	while(true) {
 		//Hue1, Saturation1, Value1, Hue2, Saturation2, Value2, 
-		deltaTime = compv.update(position, velocity, &heading);
+		deltaTime = compv.update(position, velocity, &heading, &targetX, &targetY);
 		cs.update(position, velocity, heading, deltaTime / 1000, &angle, &force);
 		cout << (int)angle << ", " << (int)force << endl;
 		//client1.transmit((int)angle, (int)force);
+		if (targetX != oldTargetX || targetY != oldTargetY) {
+			cs.setTarget(targetX, targetY);
+			oldTargetX = targetX;
+			oldTargetY = targetY;
+		}
 	}
 	return 0;
 }

@@ -9,7 +9,7 @@
 #include <math.h>
 
 #define maxAng 45
-#define reverseAng 170
+#define reverseAng 180
 #define headingScaling 60
 #define positionP 80.7
 #define positionI 0.00134
@@ -25,6 +25,7 @@
 class ControlSystem {
 public:
     ControlSystem(float targetx, float targety);
+	void setTarget(float targetx, float targety);
     void update(float position[], float velocity[], float heading, float deltaTime, float * responseAngle, float * responseForce);
 private:
 	float target[2];

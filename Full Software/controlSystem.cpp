@@ -19,6 +19,11 @@ ControlSystem::ControlSystem(float targetx, float targety) :
 	powerOn = 1;
 }
 
+void ControlSystem::setTarget(float targetx, float targety) {
+	target[0] = targetx;
+	target[1] = targety;
+}
+
 /* update: runs the control system and computes the desired force magnitude and direction
  * parameters:  position, an array with the boat's current location
  *				velocity, an array with the boat's current velocity
@@ -76,9 +81,9 @@ void ControlSystem::update(float position[], float velocity[], float heading, fl
 		left += 360;
 	if (right < 0)
 		right += 360;
-	if (left > maxAng && left <= 180 && left < reverseAng)
+	if (left > maxAng && left <= 180)// && left < reverseAng)
 		angForce = heading + maxAng;
-	if (right > maxAng && right < 180 && right < reverseAng)
+	if (right > maxAng && right < 180)// && right < reverseAng)
 		angForce = heading - maxAng;
 
 	// return desired applied force magnitude and direction	
