@@ -7,6 +7,8 @@
 #include "ComputerVision.h"
 #include <iostream>
 
+#define SYSTEM_START 32
+
 using namespace std;
 /*
 VideoCapture * capture;
@@ -202,7 +204,7 @@ int main() {
 	ComputerVision compv;
 	//capture = &compv.cap;
 	//init();
-	//Client client1;
+	Client client1;
 	ControlSystem cs(0, 0);
 	float position[2];
 	float velocity[2];
@@ -214,17 +216,20 @@ int main() {
 	int oldTargetY = 0;
 	int targetX = 0;
 	int targetY = 0;
+	bool start = false;
 	//video = &compv.cap;
 	
 	//setMouseCallback("Original", CallBackFunc, NULL);
 	//setMouseCallback("Original", onMouse, 0);
-
+	
 	while(true) {
 		//Hue1, Saturation1, Value1, Hue2, Saturation2, Value2, 
-		deltaTime = compv.update(position, velocity, &heading, &targetX, &targetY);
-		cs.update(position, velocity, heading, deltaTime / 1000, &angle, &force);
-		cout << (int)angle << ", " << (int)force << endl;
-		//client1.transmit((int)angle, (int)force);
+		if (compv.update(position, velocity, &heading, &targetX, &targetY, &deltaTime) == SYSTEM_START) start = true;
+		if (start) {
+			cs.update(position, velocity, heading, deltaTime / 1000, &angle, &force);
+			cout << (int)angle << ", " << (int)force << endl;
+			client1.transmit((int)angle, (int)force);
+		}
 		if (targetX != oldTargetX || targetY != oldTargetY) {
 			cs.setTarget(targetX, targetY);
 			oldTargetX = targetX;

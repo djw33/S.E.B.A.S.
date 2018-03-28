@@ -33,7 +33,7 @@ Client::Client() {
 	hints.ai_protocol = IPPROTO_TCP;
 
 	// Resolve the server address and port
-	iResult = getaddrinfo("153.106.168.180", DEFAULT_PORT, &hints, &result);
+	iResult = getaddrinfo("153.106.168.19", DEFAULT_PORT, &hints, &result);
 	if (iResult != 0) {
 		printf("getaddrinfo failed with error: %d\n", iResult);
 		WSACleanup();

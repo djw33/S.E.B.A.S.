@@ -13,6 +13,8 @@ const Scalar& color2 = (255, 0, 0);
 double samplingRate = 3;
 double samplingInterval = (double)1 / samplingRate;
 
+bool start = false;
+
 int Hue1 = 19;
 int Saturation1 = 185;
 int Value1 = 205;
@@ -70,6 +72,8 @@ void onMouse(int event, int x, int y, int flags, void* userdata) {
 		setTargetY = -y;
 		setTargetX = x;
 	}
+
+	
 }
 
 ComputerVision::ComputerVision() {// : cap(0) {
@@ -102,7 +106,7 @@ ComputerVision::ComputerVision() {// : cap(0) {
 	cvCreateTrackbar("Value2", "Control", &Verror2, 255); //Value (0 - 255)
 }
 //int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2, 
-float ComputerVision::update(float * positionOut, float * velocityOut, float * headingOut, int * targetX, int * targetY) {
+float ComputerVision::update(float * positionOut, float * velocityOut, float * headingOut, int * targetX, int * targetY, float * deltaTime) {
 	const string windowName = "Original";
 	
 	Mat imgOriginal;
@@ -214,9 +218,9 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 	// Sample the clock value
 	currentTime = clock();
 
-	float deltaTime = currentTime - lastTime;
+	*deltaTime = currentTime - lastTime;
 	// Calculate position and velocity vectors if the sampling period has passed
-	if (deltaTime >= samplingInterval * CLOCKS_PER_SEC) {
+	if (*deltaTime >= samplingInterval * CLOCKS_PER_SEC) {
 		float vehicleX = ((center1.x + center2.x) / 2) * pixels_to_cm;
 		float vehicleY = ((center1.y + center2.y) / 2) * pixels_to_cm;
 
@@ -243,10 +247,16 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 	imshow("Thresholded Image2", imgThresholded2);
 	imshow(windowName, imgOriginal); //show the original image
 	setMouseCallback(windowName, onMouse, 0);
-	waitKey(10);
-
+	int keypress = 0;
+	if (start) {
+		keypress = waitKey(10);
+	}
+	else {
+		keypress = waitKey(1000);
+		if (keypress == 32) start = true;
+	}
 	*targetX = setTargetX;
 	*targetY = setTargetY;
 
-	return deltaTime;
+	return keypress;
 }
