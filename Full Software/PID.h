@@ -3,6 +3,8 @@
  */
 
 #ifndef PID_H_
+#include <opencv2/opencv.hpp>
+#include <windows.h>
 #define PID_H_
 
 #include <math.h>

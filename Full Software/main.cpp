@@ -204,7 +204,7 @@ int main() {
 	ComputerVision compv;
 	//capture = &compv.cap;
 	//init();
-	Client client1;
+//	Client client1;
 	ControlSystem cs(0, 0);
 	float position[2];
 	float velocity[2];
@@ -228,7 +228,7 @@ int main() {
 		if (start) {
 			cs.update(position, velocity, heading, deltaTime / 1000, &angle, &force);
 			cout << (int)angle << ", " << (int)force << endl;
-			client1.transmit((int)angle, (int)force);
+//			client1.transmit((int)angle, (int)force);
 		}
 		if (targetX != oldTargetX || targetY != oldTargetY) {
 			cs.setTarget(targetX, targetY);
