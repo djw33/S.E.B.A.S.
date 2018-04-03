@@ -4,6 +4,7 @@
 
 #include "controlSystem.h"
 #include <iostream>
+#include <opencv2/opencv.hpp>
 
 /* ControlSystem constructor
  * parameters:  targetx, a float with the desired x coordinate of the target
@@ -11,9 +12,18 @@
  * result: the members of the ControlSystem class are initialized
  */
 ControlSystem::ControlSystem(float targetx, float targety) :
-			posController(positionP, positionI, positionD),
-			angController(angleP, angleI, angleD),
-			posVelController(positionVelP, positionVelI, positionVelD) {
+			posController(pP, pI, pD),
+			angController(aP, aI, aD),
+			posVelController(vP, vI, vD){
+	cvCreateTrackbar("Pstin P", "PID CONTROL SYSTEM", &pP, 1000);
+	cvCreateTrackbar("Pstin I", "PID CONTROL SYSTEM", &pI, 1000);
+	cvCreateTrackbar("Pstin D", "PID CONTROL SYSTEM", &pD, 1000);
+	cvCreateTrackbar("Angl P", "PID CONTROL SYSTEM", &aP, 1000);
+	cvCreateTrackbar("Angl I", "PID CONTROL SYSTEM", &aI, 1000);
+	cvCreateTrackbar("Angl D", "PID CONTROL SYSTEM", &aD, 1000);
+	cvCreateTrackbar("Vel P", "PID CONTROL SYSTEM", &vP, 1000);
+	cvCreateTrackbar("Vel I", "PID CONTROL SYSTEM", &vI, 1000);
+	cvCreateTrackbar("Vel D", "PID CONTROL SYSTEM", &vD, 1000);
 	target[0] = targetx;
 	target[1] = targety;
 	powerOn = 1;

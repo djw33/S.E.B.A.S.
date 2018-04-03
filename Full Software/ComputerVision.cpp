@@ -78,6 +78,7 @@ void onMouse(int event, int x, int y, int flags, void* userdata) {
 
 ComputerVision::ComputerVision() {// : cap(0) {
 	namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
+	namedWindow("PID CONTROL SYSTEM", CV_WINDOW_AUTOSIZE);
 	//namedWindow("Original", WINDOW_NORMAL);
 	
 	if (!cap.isOpened())  // if not success, exit program

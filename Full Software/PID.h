@@ -11,12 +11,14 @@
 
 class PID {
 public:
-    PID(float p, float i, float d);
+    PID(int &p, int &i, int &d);
 	void update(float setpoint[], float actual[], float timeFrame, float result[]);
 private:
     float integral[2];
     float lastError[2];
-    float pFactor, iFactor, dFactor;
+	int* pFactor;
+	int* iFactor;
+	int* dFactor;
 };
 
 void arrAdd(float a1[], float a2[], int size, float result[]);

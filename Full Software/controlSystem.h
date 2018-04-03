@@ -7,6 +7,7 @@
 
 #include "PID.h"
 #include <math.h>
+#include <opencv2/opencv.hpp>
 
 #define maxAng 45
 #define reverseAng 180
@@ -32,6 +33,15 @@ private:
 	PID posController;
 	PID angController;
 	PID posVelController;
+	int pP = int(positionP*10);
+	int pI = int(positionI*100000);
+	int pD = int(positionD * 10);
+	int aP = int(angleP * 10);
+	int aI = int(angleI * 100000);
+	int aD = int(angleD * 10);
+	int vP = int(positionVelP * 10);
+	int vI = int(positionVelI * 100000);
+	int vD = int(positionVelD * 10);
 	float posResponse[2];
 	float angResponse[2];
 	float posVelResponse[2];

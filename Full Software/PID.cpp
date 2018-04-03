@@ -3,6 +3,8 @@
  */
 
 #include "PID.h"
+#include <iostream>
+#include <stdio.h>
 
 /* PID constructor
  * parameters:  p, a float with the desired pFactor
@@ -10,10 +12,10 @@
  *				d, a float with the desired dFactor
  * result: the members of the PID class are initialized
  */
-PID::PID(float p, float i, float d) {
-	pFactor = p;
-	iFactor = i;
-	dFactor = d;
+PID::PID(int &p, int &i, int &d) {
+	pFactor = &p;
+	iFactor = &i;
+	dFactor = &d;
 	integral[0] = integral[1] = 0;
 	lastError[0] = lastError[1] = 0;
 }
@@ -45,11 +47,12 @@ void PID::update(float setpoint[], float actual[], float timeFrame, float result
 	float iArr[2];
 	float dArr[2];
 	float sum1[2];
-	arrScale(present, pFactor, 2, pArr);
-	arrScale(integral, iFactor, 2, iArr);
-	arrScale(deriv, dFactor, 2, dArr);
+	arrScale(present, float(*pFactor)*0.1, 2, pArr);
+	arrScale(integral, float(*iFactor)*0.00001, 2, iArr);
+	arrScale(deriv, float(*dFactor)*0.1, 2, dArr);
 	arrAdd(pArr, iArr, 2, sum1);
 	arrAdd(sum1, dArr, 2, result);
+	//std::cout << "pFactor: " << *pFactor << std::endl; print the pFactor to the window to help debug
 }
 
 /* arrAdd: adds two arrays together
