@@ -204,7 +204,7 @@ int main() {
 	ComputerVision compv;
 	//capture = &compv.cap;
 	//init();
-//	Client client1;
+	Client client1;
 	ControlSystem cs(0, 0);
 	float position[2];
 	float velocity[2];
@@ -217,6 +217,7 @@ int main() {
 	int targetX = 0;
 	int targetY = 0;
 	bool start = false;
+	bool newData = false;
 	//video = &compv.cap;
 	
 	//setMouseCallback("Original", CallBackFunc, NULL);
@@ -224,11 +225,13 @@ int main() {
 	
 	while(true) {
 		//Hue1, Saturation1, Value1, Hue2, Saturation2, Value2, 
-		if (compv.update(position, velocity, &heading, &targetX, &targetY, &deltaTime) == SYSTEM_START) start = true;
-		if (start) {
+		if (compv.update(position, velocity, &heading, &targetX, &targetY, &deltaTime, &newData) == SYSTEM_START) start = true;
+		
+		if (start && newData) {
+			//cout << position[0] << ", " << position[1] << endl;
 			cs.update(position, velocity, heading, deltaTime / 1000, &angle, &force);
 			cout << (int)angle << ", " << (int)force << endl;
-//			client1.transmit((int)angle, (int)force);
+			client1.transmit((int)angle, (int)force);
 		}
 		if (targetX != oldTargetX || targetY != oldTargetY) {
 			cs.setTarget(targetX, targetY);

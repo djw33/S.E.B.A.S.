@@ -10,7 +10,7 @@
 const Scalar& color1 = (0, 255, 0);
 const Scalar& color2 = (255, 0, 0);
 // **** SET DATA SAMPLING RATE ****
-double samplingRate = 3;
+double samplingRate = 100;
 double samplingInterval = (double)1 / samplingRate;
 
 bool start = false;
@@ -107,7 +107,8 @@ ComputerVision::ComputerVision() {// : cap(0) {
 	cvCreateTrackbar("Value2", "Control", &Verror2, 255); //Value (0 - 255)
 }
 //int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2, 
-float ComputerVision::update(float * positionOut, float * velocityOut, float * headingOut, int * targetX, int * targetY, float * deltaTime) {
+float ComputerVision::update(float * positionOut, float * velocityOut, float * headingOut, int * targetX, int * targetY, float * deltaTime, bool * newData) {
+	*newData = false;
 	const string windowName = "Original";
 	
 	Mat imgOriginal;
@@ -222,6 +223,7 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 	*deltaTime = currentTime - lastTime;
 	// Calculate position and velocity vectors if the sampling period has passed
 	if (*deltaTime >= samplingInterval * CLOCKS_PER_SEC) {
+		*newData = true;
 		float vehicleX = ((center1.x + center2.x) / 2) * pixels_to_cm;
 		float vehicleY = ((center1.y + center2.y) / 2) * pixels_to_cm;
 
