@@ -85,6 +85,9 @@ ComputerVision::ComputerVision() {// : cap(0) {
 		cout << "Cannot open the web cam" << endl;
 	}
 
+	//cap.set(CAP_PROP_FRAME_WIDTH, 1920);
+	//cap.set(CAP_PROP_FRAME_HEIGHT, 1080);
+
 	lastTime = clock();
 
 	oldVehicleX = 0;
