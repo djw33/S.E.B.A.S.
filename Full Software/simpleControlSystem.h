@@ -9,8 +9,6 @@
 #include <math.h>
 
 #define maxAng 45
-#define reverseAng 180
-#define headingScaling 60
 #define positionP 100
 #define positionI 0.002
 #define positionD 120

@@ -54,8 +54,8 @@ void ControlSystem::update(float position[], float velocity[], float heading, fl
 	if (posResponse[0] < 0) posResponse[0] = 0;
 
 	float angle = angResponse[0] * -1;
-	if (angle > 45) angle = 45;
-	if (angle < -45) angle = -45;
+	if (angle > maxAng) angle = maxAng;
+	if (angle < -1 * maxAng) angle = -1 * maxAng;
 
 	// return desired applied force magnitude and direction	
 	*responseAngle = angle;
