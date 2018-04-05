@@ -11,15 +11,12 @@
 #define maxAng 45
 #define reverseAng 180
 #define headingScaling 60
-#define positionP 80.7
-#define positionI 0.00134
-#define positionD 41.7
-#define angleP 29.3
-#define angleI 0.00203
-#define angleD 50.7
-#define positionVelP 47.8
-#define positionVelI 0.00736
-#define positionVelD 7.70
+#define positionP 100
+#define positionI 0.002
+#define positionD 120
+#define angleP 60
+#define angleI 0.002
+#define angleD 0.1
 #define PI 3.14159265
 
 class ControlSystem {

@@ -12,8 +12,7 @@
  */
 ControlSystem::ControlSystem(float targetx, float targety) :
 			posController(positionP, positionI, positionD),
-			angController(angleP, angleI, angleD),
-			posVelController(positionVelP, positionVelI, positionVelD) {
+			angController(angleP, angleI, angleD) {
 	target[0] = targetx;
 	target[1] = targety;
 	powerOn = 1;
