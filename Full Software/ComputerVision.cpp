@@ -248,6 +248,8 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 	namedWindow(windowName, CV_WINDOW_AUTOSIZE);
 	imshow("Thresholded Image1", imgThresholded1); //show the thresholded image
 	imshow("Thresholded Image2", imgThresholded2);
+	cout << setTargetX << endl;
+	circle(imgOriginal, Point2i(setTargetX, -setTargetY), 10, Scalar(0, 125, 230), 4);
 	imshow(windowName, imgOriginal); //show the original image
 	setMouseCallback(windowName, onMouse, 0);
 	int keypress = 0;
@@ -260,6 +262,7 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 	}
 	*targetX = setTargetX;
 	*targetY = setTargetY;
+	
 
 	return keypress;
 }
