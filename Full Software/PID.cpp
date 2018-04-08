@@ -52,7 +52,6 @@ void PID::update(float setpoint[], float actual[], float timeFrame, float result
 	arrScale(deriv, float(*dFactor)*0.1, 2, dArr);
 	arrAdd(pArr, iArr, 2, sum1);
 	arrAdd(sum1, dArr, 2, result);
-	//std::cout << "pFactor: " << *pFactor << std::endl; print the pFactor to the window to help debug
 }
 
 /* arrAdd: adds two arrays together

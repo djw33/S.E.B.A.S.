@@ -25,9 +25,38 @@ int Value2 = 166;
 int setTargetX = 0;
 int setTargetY = 0;
 
+int infinity_step = 0;
+
 VideoCapture cap(0);
 
+void draw_circle() {
+	infinity_step += 2;
+	infinity_step = infinity_step % 500;
 
+	if (infinity_step <= 250) {
+		setTargetX = 320 + 150 * cos(2 * PI*(infinity_step - 125) / 500);
+		setTargetY = -240 + 150 * sin(2 * PI*(infinity_step - 125) / 500);
+	}
+	else {
+		setTargetX = 320 - 150 * cos(2 * PI*(infinity_step - 376) / 500);
+		setTargetY = -240 - 150 * sin(2 * PI*(infinity_step - 376) / 500);
+	}
+}
+
+void draw_infinity_symbol() {
+	infinity_step += 2;
+	infinity_step = infinity_step % 500;
+
+	if (infinity_step <= 250) {
+		setTargetX = 320+200*cos(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
+		setTargetY = -240+200*sin(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
+	}
+	else {
+		setTargetX = 320 - 200 * cos(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
+		setTargetY = -240 + 200 * sin(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
+	}
+
+}
 
 void onMouse(int event, int x, int y, int flags, void* userdata) {
 	// Left click to indicate front of the vehicle
@@ -260,6 +289,8 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 		keypress = waitKey(1000);
 		if (keypress == 32) start = true;
 	}
+	//draw_infinity_symbol();
+	draw_circle();
 	*targetX = setTargetX;
 	*targetY = setTargetY;
 	

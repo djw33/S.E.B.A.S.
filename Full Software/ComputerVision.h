@@ -4,12 +4,15 @@
 #include <math.h>
 #include <ctime>
 
+#define PI 3.14159265
+
 using namespace cv;
 using namespace std;
 
 class ComputerVision {
 public:
 	ComputerVision();
+
 	//int Hue1, int Saturation1, int Value1, int Hue2, int Saturation2, int Value2, 
 	float update(float * positionOut, float * velocityOut, float * headingOut, int * targetX, int * targetY, float * deltaTime, bool * newData);
 	//VideoCapture cap;
