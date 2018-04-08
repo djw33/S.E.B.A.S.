@@ -43,6 +43,29 @@ void draw_circle() {
 	}
 }
 
+
+void draw_figure_8() {
+	infinity_step += 2;
+	infinity_step = infinity_step % 1000;
+	int r = 100;
+	if (infinity_step <= 250) {
+		setTargetX = 320 + r + r * sin(2 * PI*(infinity_step - 125) / 500);
+		setTargetY = -240 + r * cos(2 * PI*(infinity_step - 125) / 500);
+	}
+	else if (infinity_step <= 500) {
+		setTargetX = 320 +r - r * sin(2 * PI*(infinity_step - 376) / 500);
+		setTargetY = -240 - r * cos(2 * PI*(infinity_step - 376) / 500);
+	}
+	else if (infinity_step <= 750) {
+		setTargetX = 320 - r - r * sin(2 * PI*(infinity_step - 125) / 500);
+		setTargetY = -240 + r * cos(2 * PI*(infinity_step - 125) / 500);
+	}
+	else {
+		setTargetX = 320 - r + r * sin(2 * PI*(infinity_step - 376) / 500);
+		setTargetY = -240 - r * cos(2 * PI*(infinity_step - 376) / 500);
+	}
+}
+
 void draw_infinity_symbol() {
 	infinity_step += 2;
 	infinity_step = infinity_step % 500;
@@ -290,7 +313,8 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 		if (keypress == 32) start = true;
 	}
 	//draw_infinity_symbol();
-	draw_circle();
+	//draw_figure_8();
+	//draw_circle();
 	*targetX = setTargetX;
 	*targetY = setTargetY;
 	
