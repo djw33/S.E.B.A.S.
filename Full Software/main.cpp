@@ -35,7 +35,7 @@ int main() {
 		if (start && newData) {
 			cs.update(position, velocity, heading, deltaTime / 1000, &angle, &force);
 			cout << (int)angle << ", " << (int)force << endl;
-		//	client1.transmit((int)angle, (int)force);
+			//client1.transmit((int)angle, (int)force);
 		}
 
 		if (targetX != oldTargetX || targetY != oldTargetY) {

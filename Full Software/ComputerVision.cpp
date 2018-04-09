@@ -25,13 +25,13 @@ int Value2 = 166;
 int setTargetX = 0;
 int setTargetY = 0;
 
-int infinity_step = 0;
+float infinity_step = 0;
 
 VideoCapture cap(0);
 
 void draw_circle() {
-	infinity_step += 2;
-	infinity_step = infinity_step % 500;
+	infinity_step += 1.5;
+	if (infinity_step >= 500) infinity_step = 0;
 
 	if (infinity_step <= 250) {
 		setTargetX = 320 + 150 * cos(2 * PI*(infinity_step - 125) / 500);
@@ -46,7 +46,7 @@ void draw_circle() {
 
 void draw_figure_8() {
 	infinity_step += 2;
-	infinity_step = infinity_step % 1000;
+	infinity_step = float(int(infinity_step) % 1000);
 	int r = 100;
 	if (infinity_step <= 250) {
 		setTargetX = 320 + r + r * sin(2 * PI*(infinity_step - 125) / 500);
@@ -68,15 +68,15 @@ void draw_figure_8() {
 
 void draw_infinity_symbol() {
 	infinity_step += 2;
-	infinity_step = infinity_step % 500;
+	infinity_step = float(int(infinity_step) % 500);
 
 	if (infinity_step <= 250) {
-		setTargetX = 320+200*cos(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
-		setTargetY = -240+200*sin(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
+		setTargetX = 320+150*cos(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
+		setTargetY = -240+150*sin(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
 	}
 	else {
-		setTargetX = 320 - 200 * cos(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
-		setTargetY = -240 + 200 * sin(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
+		setTargetX = 320 - 150 * cos(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
+		setTargetY = -240 + 150 * sin(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
 	}
 
 }
