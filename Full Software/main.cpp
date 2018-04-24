@@ -19,8 +19,8 @@ int main() {
 	float position[2];
 	float velocity[2];
 	float heading;
-	float angle;
-	float force;
+	float angle=0;
+	float force=0;
 	float deltaTime;
 	int oldTargetX = 0;
 	int oldTargetY = 0;
@@ -30,7 +30,7 @@ int main() {
 	bool newData = false;
 	
 	while(true) {
-		if (compv.update(position, velocity, &heading, &targetX, &targetY, &deltaTime, &newData) == SYSTEM_START) start = true;
+		if (compv.update(position, velocity, &heading, &targetX, &targetY, &deltaTime, &newData, angle, force) == SYSTEM_START) start = true;
 		
 		if (start && newData) {
 			cs.update(position, velocity, heading, deltaTime / 1000, &angle, &force);
