@@ -22,7 +22,7 @@ Client::Client() {
 
 
 	// Initialize Winsock
-	iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+	iResult =  WSAStartup(MAKEWORD(2, 2), &wsaData);
 	if (iResult != 0) {
 		printf("WSAStartup failed with error: %d\n", iResult);
 	}
@@ -33,7 +33,7 @@ Client::Client() {
 	hints.ai_protocol = IPPROTO_TCP;
 
 	// Resolve the server address and port
-	iResult = getaddrinfo("153.106.168.19", DEFAULT_PORT, &hints, &result);
+	iResult = getaddrinfo("153.106.168.55", DEFAULT_PORT, &hints, &result);
 	if (iResult != 0) {
 		printf("getaddrinfo failed with error: %d\n", iResult);
 		WSACleanup();
@@ -67,7 +67,7 @@ int Client::transmit(int heading, int velocity) {
 	snprintf(sendbuf, 50, "%d,%d,", heading, velocity);
 	if (ConnectSocket == INVALID_SOCKET) {
 		printf("Unable to connect to server!\n");
-		WSACleanup();
+		//WSACleanup();	//trying to remove error 10093
 		return -1;
 	}
 
@@ -76,7 +76,7 @@ int Client::transmit(int heading, int velocity) {
 	if (iResult == SOCKET_ERROR) {
 		printf("send failed with error: %d\n", WSAGetLastError());
 		closesocket(ConnectSocket);
-		WSACleanup();
+		//WSACleanup();	//trying to remove error 10093
 		return -1;
 	}
 
