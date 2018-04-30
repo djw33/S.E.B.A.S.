@@ -8,8 +8,8 @@
 #include "PID.h"
 #include <math.h>
 
-#define maxAng 45
-#define positionP 102.7
+#define maxAng 40
+#define positionP 42.5
 #define positionI 0.002
 #define positionD 94.5
 #define angleP 60
