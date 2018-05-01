@@ -60,6 +60,7 @@ void SimpleControlSystem::update(float position[], float velocity[], float headi
 	if (posResponse[0] < 0) posResponse[0] = 0;
 
 	float angle = angResponse[0]*-1;
+	angle = angle / 125;
 	std::cout << angle << std::endl;
 	if (angle > maxAng) angle = maxAng;
 	if (angle < -1 * maxAng) angle = -1 * maxAng;

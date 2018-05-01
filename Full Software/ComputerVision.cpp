@@ -273,7 +273,7 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 	//calculate the other point for the force arrow
 	float x = center1.x - center2.x;
 	float y = center1.y - center2.y;
-	angle = angle*-1;
+	mag *= -1;
 	forcepoint.x = mag / 20000 * (x*cos(angle) - y*sin(angle))+center2.x;
 	forcepoint.y = mag / 20000 * (x*sin(angle) + y*cos(angle))+center2.y;
 	arrowedLine(imgOriginal, center2, forcepoint, Scalar(0, 0, 255), 4);
@@ -312,7 +312,7 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 	namedWindow(windowName, CV_WINDOW_AUTOSIZE);
 	imshow("Thresholded Image1", imgThresholded1); //show the thresholded image
 	imshow("Thresholded Image2", imgThresholded2);
-	cout << setTargetX << endl;
+	//cout << setTargetX << endl;
 	circle(imgOriginal, Point2i(setTargetX, -setTargetY), 10, Scalar(0, 125, 230), 4);
 	imshow(windowName, imgOriginal); //show the original image
 	setMouseCallback(windowName, onMouse, 0);
