@@ -29,17 +29,22 @@ float infinity_step = 0;
 
 VideoCapture cap(0);
 
+int framewidthx = 1260;
+int framewidthy = 960;
+int framecentery = framewidthy / 2;
+int framecenterx = framewidthx / 2;
+
 void draw_circle() {
 	infinity_step += 1.5;
 	if (infinity_step >= 500) infinity_step = 0;
 
 	if (infinity_step <= 250) {
-		setTargetX = 320 + 150 * cos(2 * PI*(infinity_step - 125) / 500);
-		setTargetY = -240 + 150 * sin(2 * PI*(infinity_step - 125) / 500);
+		setTargetX = framecenterx + 300 * cos(2 * PI*(infinity_step - 125) / 500);
+		setTargetY = -framecentery + 300 * sin(2 * PI*(infinity_step - 125) / 500);
 	}
 	else {
-		setTargetX = 320 - 150 * cos(2 * PI*(infinity_step - 376) / 500);
-		setTargetY = -240 - 150 * sin(2 * PI*(infinity_step - 376) / 500);
+		setTargetX = framecenterx - 300 * cos(2 * PI*(infinity_step - 376) / 500);
+		setTargetY = -framecentery - 300 * sin(2 * PI*(infinity_step - 376) / 500);
 	}
 }
 
@@ -47,22 +52,22 @@ void draw_circle() {
 void draw_figure_8() {
 	infinity_step += 2;
 	infinity_step = float(int(infinity_step) % 1000);
-	int r = 100;
+	int r = 200;
 	if (infinity_step <= 250) {
-		setTargetX = 320 + r + r * sin(2 * PI*(infinity_step - 125) / 500);
-		setTargetY = -240 + r * cos(2 * PI*(infinity_step - 125) / 500);
+		setTargetX = framecenterx + r + r * sin(2 * PI*(infinity_step - 125) / 500);
+		setTargetY = -framecentery + r * cos(2 * PI*(infinity_step - 125) / 500);
 	}
 	else if (infinity_step <= 500) {
-		setTargetX = 320 +r - r * sin(2 * PI*(infinity_step - 376) / 500);
-		setTargetY = -240 - r * cos(2 * PI*(infinity_step - 376) / 500);
+		setTargetX = framecenterx +r - r * sin(2 * PI*(infinity_step - 376) / 500);
+		setTargetY = -framecentery - r * cos(2 * PI*(infinity_step - 376) / 500);
 	}
 	else if (infinity_step <= 750) {
-		setTargetX = 320 - r - r * sin(2 * PI*(infinity_step - 125) / 500);
-		setTargetY = -240 + r * cos(2 * PI*(infinity_step - 125) / 500);
+		setTargetX = framecenterx - r - r * sin(2 * PI*(infinity_step - 125) / 500);
+		setTargetY = -framecentery + r * cos(2 * PI*(infinity_step - 125) / 500);
 	}
 	else {
-		setTargetX = 320 - r + r * sin(2 * PI*(infinity_step - 376) / 500);
-		setTargetY = -240 - r * cos(2 * PI*(infinity_step - 376) / 500);
+		setTargetX = framecenterx - r + r * sin(2 * PI*(infinity_step - 376) / 500);
+		setTargetY = -framecentery - r * cos(2 * PI*(infinity_step - 376) / 500);
 	}
 }
 
@@ -71,12 +76,12 @@ void draw_infinity_symbol() {
 	infinity_step = float(int(infinity_step) % 500);
 
 	if (infinity_step <= 250) {
-		setTargetX = 320+150*cos(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
-		setTargetY = -240+150*sin(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
+		setTargetX = framecenterx +150*cos(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
+		setTargetY = -framecentery +150*sin(2 * PI*(infinity_step - 125) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 125) / 1000));
 	}
 	else {
-		setTargetX = 320 - 150 * cos(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
-		setTargetY = -240 + 150 * sin(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
+		setTargetX = framecenterx - 150 * cos(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
+		setTargetY = -framecentery + 150 * sin(2 * PI*(infinity_step - 376) / 1000)*sqrt(2 * cos(4 * PI*(infinity_step - 376) / 1000));
 	}
 
 }
@@ -129,6 +134,9 @@ void onMouse(int event, int x, int y, int flags, void* userdata) {
 }
 
 ComputerVision::ComputerVision() {// : cap(0) {
+	
+	cap.set(CV_CAP_PROP_FRAME_WIDTH, framewidthx);
+	cap.set(CV_CAP_PROP_FRAME_HEIGHT, framewidthy);
 	namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
 	namedWindow("PID CONTROL SYSTEM", CV_WINDOW_AUTOSIZE);
 	//namedWindow("Original", WINDOW_NORMAL);
@@ -325,7 +333,7 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 		if (keypress == 32) start = true;
 	}
 	//draw_infinity_symbol();
-	//draw_figure_8();
+	draw_figure_8();
 	//draw_circle();
 	*targetX = setTargetX;
 	*targetY = setTargetY;
