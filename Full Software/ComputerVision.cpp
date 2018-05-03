@@ -29,8 +29,8 @@ float infinity_step = 0;
 
 VideoCapture cap(0);
 
-int framewidthx = 1260;
-int framewidthy = 960;
+int framewidthx = 640;
+int framewidthy = 640;
 int framecentery = framewidthy / 2;
 int framecenterx = framewidthx / 2;
 
@@ -196,6 +196,8 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 		cout << "Cannot read a frame from video stream" << endl;
 	}
 
+	//resize(imgOriginal, imgOriginal, Size(640, 480), 0, 0, 1);
+
 	cvtColor(imgOriginal, imgHSV, COLOR_BGR2HSV); //Convert the captured frame from BGR to HSV
 
 	Mat imgThresholded1;
@@ -321,7 +323,8 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 	imshow("Thresholded Image1", imgThresholded1); //show the thresholded image
 	imshow("Thresholded Image2", imgThresholded2);
 	//cout << setTargetX << endl;
-	circle(imgOriginal, Point2i(setTargetX, -setTargetY), 10, Scalar(0, 125, 230), 4);
+	circle(imgOriginal, Point2i(setTargetX, -setTargetY), 50, Scalar(0, 125, 230), 4);
+	circle(imgOriginal, Point2i(setTargetX, -setTargetY), 100, Scalar(230, 125, 0), 4);
 	imshow(windowName, imgOriginal); //show the original image
 	setMouseCallback(windowName, onMouse, 0);
 	int keypress = 0;
@@ -333,7 +336,7 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 		if (keypress == 32) start = true;
 	}
 	//draw_infinity_symbol();
-	draw_figure_8();
+	//draw_figure_8();
 	//draw_circle();
 	*targetX = setTargetX;
 	*targetY = setTargetY;

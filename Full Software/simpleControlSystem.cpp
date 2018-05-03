@@ -59,13 +59,20 @@ void SimpleControlSystem::update(float position[], float velocity[], float headi
 	// adjust responses
 	if (posResponse[0] < 0) posResponse[0] = 0;
 
+	if (magnitude < SMALL_CIRCLE) {
+		powerOn = 0;
+	}
+	else if (magnitude > LARGE_CIRCLE) {
+		powerOn = 1;
+	}
+
 	float angle = angResponse[0]*-1;
-	angle = angle / 125;
+	angle = angle / angleScaleFactor;
 	std::cout << angle << std::endl;
 	if (angle > maxAng) angle = maxAng;
 	if (angle < -1 * maxAng) angle = -1 * maxAng;
 
 	// return desired applied force magnitude and direction	
 	*responseAngle = angle;
-	*responseForce = posResponse[0];
+	*responseForce = (posResponse[0] * powerOn);// +pow(abs(angle), 3) / 28) * powerOn;
 }

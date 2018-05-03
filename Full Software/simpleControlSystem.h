@@ -8,7 +8,8 @@
 #include "PID.h"
 #include <math.h>
 
-#define maxAng 40
+#define maxAng 65
+#define angleScaleFactor 40*125/maxAng
 #define positionP 42.5
 #define positionI 0.002
 #define positionD 94.5
@@ -16,6 +17,8 @@
 #define angleI 0.002
 #define angleD 37.2
 #define PI 3.14159265
+#define SMALL_CIRCLE 50
+#define LARGE_CIRCLE 100
 
 class SimpleControlSystem {
 public:
