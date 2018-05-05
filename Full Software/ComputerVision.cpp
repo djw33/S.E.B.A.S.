@@ -14,6 +14,7 @@ double samplingRate = 100;
 double samplingInterval = (double)1 / samplingRate;
 
 bool start = false;
+int pattern = 0;
 
 int Hue1 = 19;
 int Saturation1 = 185;
@@ -26,33 +27,35 @@ int setTargetX = 0;
 int setTargetY = 0;
 
 float infinity_step = 0;
+int drawspeed = 2;
 
 VideoCapture cap(0);
 
 int framewidthx = 640;
-int framewidthy = 640;
+int framewidthy = 480;
 int framecentery = framewidthy / 2;
 int framecenterx = framewidthx / 2;
 
 void draw_circle() {
-	infinity_step += 1.5;
+	int radius = 150;
+	infinity_step += drawspeed;
 	if (infinity_step >= 500) infinity_step = 0;
 
 	if (infinity_step <= 250) {
-		setTargetX = framecenterx + 300 * cos(2 * PI*(infinity_step - 125) / 500);
-		setTargetY = -framecentery + 300 * sin(2 * PI*(infinity_step - 125) / 500);
+		setTargetX = framecenterx + radius * cos(2 * PI*(infinity_step - 125) / 500);
+		setTargetY = -framecentery + radius * sin(2 * PI*(infinity_step - 125) / 500);
 	}
 	else {
-		setTargetX = framecenterx - 300 * cos(2 * PI*(infinity_step - 376) / 500);
-		setTargetY = -framecentery - 300 * sin(2 * PI*(infinity_step - 376) / 500);
+		setTargetX = framecenterx - radius * cos(2 * PI*(infinity_step - 376) / 500);
+		setTargetY = -framecentery - radius * sin(2 * PI*(infinity_step - 376) / 500);
 	}
 }
 
 
 void draw_figure_8() {
-	infinity_step += 2;
+	infinity_step += drawspeed;
 	infinity_step = float(int(infinity_step) % 1000);
-	int r = 200;
+	int r = 100;
 	if (infinity_step <= 250) {
 		setTargetX = framecenterx + r + r * sin(2 * PI*(infinity_step - 125) / 500);
 		setTargetY = -framecentery + r * cos(2 * PI*(infinity_step - 125) / 500);
@@ -72,7 +75,7 @@ void draw_figure_8() {
 }
 
 void draw_infinity_symbol() {
-	infinity_step += 2;
+	infinity_step += drawspeed;
 	infinity_step = float(int(infinity_step) % 500);
 
 	if (infinity_step <= 250) {
@@ -139,6 +142,7 @@ ComputerVision::ComputerVision() {// : cap(0) {
 	cap.set(CV_CAP_PROP_FRAME_HEIGHT, framewidthy);
 	namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
 	namedWindow("PID CONTROL SYSTEM", CV_WINDOW_AUTOSIZE);
+	namedWindow("Pattern Selection", CV_WINDOW_AUTOSIZE);
 	//namedWindow("Original", WINDOW_NORMAL);
 	
 	if (!cap.isOpened())  // if not success, exit program
@@ -157,6 +161,9 @@ ComputerVision::ComputerVision() {// : cap(0) {
 	Herror2 = 8;
 	Serror2 = 50;
 	Verror2 = 50;
+
+	cvCreateTrackbar("Pattern", "Pattern Selection", &pattern, 2);
+	cvCreateTrackbar("Speed", "Pattern Selection", &drawspeed, 5);
 
 	//Create trackbars in "Control" window
 	cvCreateTrackbar("Hue1", "Control", &Herror1, 179); //Hue (0 - 179)
@@ -335,9 +342,13 @@ float ComputerVision::update(float * positionOut, float * velocityOut, float * h
 		keypress = waitKey(1000);
 		if (keypress == 32) start = true;
 	}
-	//draw_infinity_symbol();
-	//draw_figure_8();
-	//draw_circle();
+	if (pattern == 1) {
+		draw_figure_8();
+	}
+	else if (pattern == 2) {
+		draw_circle();
+	}
+
 	*targetX = setTargetX;
 	*targetY = setTargetY;
 	
